@@ -47,9 +47,9 @@ impl HTTPEndpointHandler {
         })
     }
 
-    pub fn serve(&self, addr: &str) {
-        let listener = TcpListener::bind(addr).unwrap();
-        println!("Listening for connections on {}", addr);
+    pub fn serve(&self, port: u32) {
+        let listener = TcpListener::bind(format!("0.0.0.0:{}", port)).unwrap();
+        println!("Listening for connections on port {}", port);
 
         for stream in listener.incoming() {
             match stream {

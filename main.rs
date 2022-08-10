@@ -5,5 +5,5 @@ fn main() {
     let mut endpoints = HTTPEndpointHandler::new();
     endpoints.add("/echo", echo);
 
-    endpoints.serve("0.0.0.0:8080");
+    endpoints.serve(8080);
 }
