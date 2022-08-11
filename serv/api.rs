@@ -22,11 +22,14 @@ impl HTTPEndpointHandler {
 
     fn handle_request(&self, stream: TcpStream) {
         match http::parse_tcpstream(&stream) {
-            Ok(r) => {
-                http::respond_to_tcpstream(&stream, self.process(r));
-            }
+            Ok(r) => match http::respond_to_tcpstream(&stream, self.process(r)) {
+                Ok(_) => {}
+                Err(e) => {
+                    println!("Failed to respond to request: {}", e);
+                }
+            },
             Err(e) => {
-                println!("Invalid request sent: {}", e);
+                println!("Invalid request recieved: {}", e);
             }
         };
     }
