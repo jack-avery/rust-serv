@@ -29,7 +29,7 @@ fn example_multbytwo(req: &http::Request) -> http::Response {
         match num {
             Ok(i) => res.body = (i * 2).to_string(),
             Err(e) => {
-                res = api::gen500(e.to_string());
+                res = api::gen400(e.to_string());
             }
         }
     }

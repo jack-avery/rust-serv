@@ -65,20 +65,16 @@ impl HTTPEndpointHandler {
     }
 }
 
-pub fn echo(req: &http::Request) -> http::Response {
-    let mut res = http::Response::new(http::Code::Ok);
+pub fn gen400(err: String) -> http::Response {
+    let mut res = http::Response::new(http::Code::MalformedRequest);
 
-    res.mod_header("Content-Type", "text/html; charset=utf-8");
-
-    res.body = req.clone().path;
+    res.body = format!("malformed request: {}", err);
 
     res
 }
 
 pub fn gen402(req: &http::Request) -> http::Response {
     let mut res = http::Response::new(http::Code::Forbidden);
-
-    res.mod_header("Content-Type", "text/html; charset=utf-8");
 
     res.body = format!("unauthorized for access to resource {}", req.loc);
 
@@ -88,8 +84,6 @@ pub fn gen402(req: &http::Request) -> http::Response {
 pub fn gen404() -> http::Response {
     let mut res = http::Response::new(http::Code::NotFound);
 
-    res.mod_header("Content-Type", "text/html; charset=utf-8");
-
     res.body = res.to_string();
 
     res
@@ -97,8 +91,6 @@ pub fn gen404() -> http::Response {
 
 pub fn gen500(err: String) -> http::Response {
     let mut res = http::Response::new(http::Code::InternalError);
-
-    res.mod_header("Content-Type", "text/html; charset=utf-8");
 
     res.body = format!("{}\n{}", res.to_string(), err);
 
