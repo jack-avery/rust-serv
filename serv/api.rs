@@ -87,7 +87,11 @@ pub fn gen402(req: &http::Request) -> http::Response {
 
 /// Generate a `Response` with code `404 NOT FOUND`.
 pub fn gen404() -> http::Response {
-    http::Response::new(http::Code::NotFound)
+    let mut res = http::Response::new(http::Code::NotFound);
+
+    res.body = res.to_string();
+
+    res
 }
 
 /// Generate a `Response` with code `500 INTERNAL ERROR` with informational message `err`.
