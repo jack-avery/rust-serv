@@ -40,6 +40,7 @@ impl HTTPEndpointHandler {
         gen404()
     }
 
+    /// Add an endpoint to this `HTTPEndpointHandler`.
     pub fn add(&mut self, loc: &str, func: fn(&http::Request) -> http::Response) {
         self.endpoints.push(Endpoint {
             loc: loc.to_string(),
@@ -47,6 +48,7 @@ impl HTTPEndpointHandler {
         })
     }
 
+    /// Make this `HTTPEndpointHandler` begin serving on the given port.
     pub fn serve(&self, port: u32) {
         let listener = TcpListener::bind(format!("0.0.0.0:{}", port)).unwrap();
         println!("Listening for connections on port {}", port);
@@ -65,6 +67,7 @@ impl HTTPEndpointHandler {
     }
 }
 
+/// Generate a `Response` with code `400 MALFORMED REQUEST` with informational message `err`.
 pub fn gen400(err: String) -> http::Response {
     let mut res = http::Response::new(http::Code::MalformedRequest);
 
@@ -73,6 +76,7 @@ pub fn gen400(err: String) -> http::Response {
     res
 }
 
+/// Generate a `Response` with code `402 FORBIDDEN`.
 pub fn gen402(req: &http::Request) -> http::Response {
     let mut res = http::Response::new(http::Code::Forbidden);
 
@@ -81,14 +85,12 @@ pub fn gen402(req: &http::Request) -> http::Response {
     res
 }
 
+/// Generate a `Response` with code `404 NOT FOUND`.
 pub fn gen404() -> http::Response {
-    let mut res = http::Response::new(http::Code::NotFound);
-
-    res.body = res.to_string();
-
-    res
+    http::Response::new(http::Code::NotFound)
 }
 
+/// Generate a `Response` with code `500 INTERNAL ERROR` with informational message `err`.
 pub fn gen500(err: String) -> http::Response {
     let mut res = http::Response::new(http::Code::InternalError);
 

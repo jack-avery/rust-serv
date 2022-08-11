@@ -98,6 +98,8 @@ impl Request {
         );
     }
 
+    /// Get a Header based on its' `key` as a `Header`.
+    /// Can be `None` if the header does not exist.
     pub fn get_header(&self, key: &str) -> Option<Header> {
         let hiter = self.headers.clone().into_iter();
         for h in hiter {
@@ -108,6 +110,8 @@ impl Request {
         None
     }
 
+    /// Get a URL Parameter based on its' `key` as a `String`.
+    /// Can be `None` if the parameter is not provided.
     pub fn get_param(&self, key: &str) -> Option<String> {
         let qiter = self.query.clone().into_iter();
         for q in qiter {
@@ -120,6 +124,9 @@ impl Request {
 }
 
 impl Response {
+    /// Create a new `Response` with a response code of `code`.
+    ///
+    /// See `enum Code`
     pub fn new(code: Code) -> Response {
         let headers: Vec<Header> = Vec::new();
         Response {
@@ -130,14 +137,16 @@ impl Response {
         }
     }
 
+    /// Create a new `Response` with a response code of `200 OK`.
     pub fn new_ok() -> Response {
         Self::new(Code::Ok)
     }
 
     pub fn to_string(&self) -> String {
-        format!("{} {}", self.version, self.code.to_str(),)
+        format!("{} {}", self.version, self.code.to_str())
     }
 
+    /// Convert this `Response` into a proper HTTP message as a `String`.
     pub fn to_http(&self) -> String {
         let mut res = format!("{} {}\n", self.version, self.code.to_str());
 
@@ -151,6 +160,7 @@ impl Response {
         res
     }
 
+    /// Add (or modify) a header using its' `key` and `value`.
     pub fn mod_header(&mut self, key: &str, value: &str) {
         let hiter = self.headers.clone().into_iter();
         for mut h in hiter {
@@ -172,6 +182,7 @@ impl Header {
     }
 }
 
+/// Turn a `TcpStream` incoming message into a `Request` for working with.
 pub fn parse_tcpstream(mut stream: &TcpStream) -> Result<Request, Error> {
     let mut buf = [0u8; 4096];
 
@@ -221,6 +232,7 @@ pub fn parse_tcpstream(mut stream: &TcpStream) -> Result<Request, Error> {
     }
 }
 
+/// Respond to a `TcpStream` with a `Response`.
 pub fn respond_to_tcpstream(mut stream: &TcpStream, mut with: Response) -> Result<usize, Error> {
     with.mod_header("Content-Length", format!("{}", with.body.len()).as_str());
     let resp = with.to_http();
