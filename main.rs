@@ -11,7 +11,7 @@ fn main() {
 }
 
 pub fn echo(req: &http::Request) -> http::Response {
-    let mut res = http::Response::new(http::Code::Ok);
+    let mut res = http::Response::new_ok();
 
     res.mod_header("Content-Type", "text/html; charset=utf-8");
 
@@ -21,7 +21,7 @@ pub fn echo(req: &http::Request) -> http::Response {
 }
 
 fn example_multbytwo(req: &http::Request) -> http::Response {
-    let mut res = http::Response::new(http::Code::Ok);
+    let mut res = http::Response::new_ok();
 
     if let Some(n) = req.get_param("number") {
         let num: Result<i32, ParseIntError> = n.trim().parse();

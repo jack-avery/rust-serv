@@ -130,6 +130,10 @@ impl Response {
         }
     }
 
+    pub fn new_ok() -> Response {
+        Self::new(Code::Ok)
+    }
+
     pub fn to_string(&self) -> String {
         format!("{} {}", self.version, self.code.to_str(),)
     }
