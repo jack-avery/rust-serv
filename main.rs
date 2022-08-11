@@ -4,13 +4,13 @@ use std::num::ParseIntError;
 
 fn main() {
     let mut endpoints = api::HTTPEndpointHandler::new();
-    endpoints.add("/echo", echo);
+    endpoints.add("/echo", example_echo);
     endpoints.add("/mult", example_multbytwo);
 
     endpoints.serve(8080);
 }
 
-pub fn echo(req: &http::Request) -> http::Response {
+fn example_echo(req: &http::Request) -> http::Response {
     let mut res = http::Response::new_ok();
 
     res.mod_header("Content-Type", "text/html; charset=utf-8");
