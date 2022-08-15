@@ -1,0 +1,32 @@
+---
+- name: Create build directory
+  ansible.builtin.file:
+    path: ~/build
+    state: directory
+    mode: "0777"
+
+- name: Copy build sources
+  ansible.builtin.synchronize:
+    src: ./
+    dest: ~/build/
+    archive: false
+    recursive: true
+
+- name: Build image
+  community.docker.docker_image:
+    name: rust-serv
+    source: build
+    build:
+      dockerfile: Dockerfile
+      platform: linux/arm64/v8
+      path: ~/build/
+
+- name: Create container
+  community.docker.docker_container:
+    name: rust-serv
+    image: rust-serv
+    state: started
+    network_mode: host
+    restart: true
+    interactive: true
+    restart_policy: always

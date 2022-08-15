@@ -1,0 +1,5 @@
+---
+- name: Deploy server
+  hosts: serv
+  roles:
+    - serv

@@ -1,0 +1,5 @@
+serv:
+  hosts:
+    serv1:
+      ansible_host: 192.168.0.181 # raspberry pi running ubuntu 22.04lts w/ reserved dhcp
+
