@@ -5,7 +5,9 @@ use std::num::ParseIntError;
 fn main() {
     let mut endpoints = api::HTTPEndpointHandler::new();
     endpoints.add("/echo", example_echo);
-    endpoints.add("/mult", example_multbytwo);
+    endpoints.add("/mult", example_mult);
+    endpoints.add("/passurl", example_passurl);
+    endpoints.add("/passhead", example_passhead);
 
     endpoints.serve(8080);
 }
@@ -20,7 +22,7 @@ fn example_echo(req: &http::Request) -> http::Response {
     res
 }
 
-fn example_multbytwo(req: &http::Request) -> http::Response {
+fn example_mult(req: &http::Request) -> http::Response {
     let mut res = http::Response::new_ok();
 
     if let Some(n) = req.get_param("number") {
@@ -32,6 +34,34 @@ fn example_multbytwo(req: &http::Request) -> http::Response {
                 res = api::gen400(e.to_string());
             }
         }
+    }
+
+    res
+}
+
+fn example_passurl(req: &http::Request) -> http::Response {
+    let mut res = http::Response::new_ok();
+
+    if let Some(n) = req.get_param("foo") {
+        if n == "bar".to_string() {
+            res.body = "ok".to_string();
+        }
+    } else {
+        res = api::gen402(req);
+    }
+
+    res
+}
+
+fn example_passhead(req: &http::Request) -> http::Response {
+    let mut res = http::Response::new_ok();
+
+    if let Some(n) = req.get_header("Foo") {
+        if n == "Bar".to_string() {
+            res.body = "ok".to_string();
+        }
+    } else {
+        res = api::gen402(req);
     }
 
     res
