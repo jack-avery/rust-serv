@@ -1,0 +1,5 @@
+---
+- name: Deploy container to host
+  hosts: serv
+  roles:
+    - deploy

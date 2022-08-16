@@ -1,0 +1,17 @@
+---
+- name: Log in to Docker Hub # jackavery/rust-serv is private
+  community.docker.docker_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+
+- name: Create container
+  community.docker.docker_container:
+    name: rust-serv
+    image: "jackavery/rust-serv"
+    pull: true
+    state: started
+    interactive: true
+    network_mode: host
+    restart: true
+    restart_policy: always
+    tty: true

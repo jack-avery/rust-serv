@@ -12,21 +12,24 @@
     archive: false
     recursive: true
 
-- name: Build image
+- name: Log in to Docker Hub
+  community.docker.docker_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+
+- name: Build image & upload
   community.docker.docker_image:
-    name: rust-serv
+    name: jackavery/rust-serv
+    tag: latest
     source: build
+    force_tag: true
+    push: true
+    force_source: true
     build:
+      nocache: true
+      pull: true
+      rm: true
       dockerfile: Dockerfile
       platform: linux/arm64/v8
       path: ~/build/
-
-- name: Create container
-  community.docker.docker_container:
-    name: rust-serv
-    image: rust-serv
-    state: started
-    network_mode: host
-    restart: true
-    interactive: true
-    restart_policy: always
+    state: present

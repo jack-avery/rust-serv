@@ -1,0 +1,5 @@
+---
+- name: Build server image and upload to DockerHub
+  hosts: build
+  roles:
+    - build
