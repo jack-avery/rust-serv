@@ -98,19 +98,19 @@ impl Request {
         );
     }
 
-    /// Get a Header based on its' `key` as a `Header`.
+    /// Get the value of a Header based on its' `key` as a `String`.
     /// Can be `None` if the header does not exist.
-    pub fn get_header(&self, key: &str) -> Option<Header> {
+    pub fn get_header(&self, key: &str) -> Option<String> {
         let hiter = self.headers.clone().into_iter();
         for h in hiter {
             if h.key == key {
-                return Some(h);
+                return Some(h.value);
             }
         }
         None
     }
 
-    /// Get a URL Parameter based on its' `key` as a `String`.
+    /// Get the value of a URL Parameter based on its' `key` as a `String`.
     /// Can be `None` if the parameter is not provided.
     pub fn get_param(&self, key: &str) -> Option<String> {
         let qiter = self.query.clone().into_iter();
