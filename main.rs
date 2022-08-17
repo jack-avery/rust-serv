@@ -59,10 +59,10 @@ fn example_passhead(req: &http::Request) -> http::Response {
     if let Some(n) = req.get_header("Foo") {
         if n == "Bar".to_string() {
             res.body = "ok".to_string();
+
+            return res;
         }
-    } else {
-        res = api::gen402(req);
     }
 
-    res
+    api::gen402(req)
 }
