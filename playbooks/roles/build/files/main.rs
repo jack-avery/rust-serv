@@ -42,7 +42,7 @@ fn example_mult(req: &http::Request) -> http::Response {
 fn example_passurl(req: &http::Request) -> http::Response {
     let mut res = http::Response::new_ok();
 
-    if let Some(n) = req.get_header("Foo") {
+    if let Some(n) = req.get_param("Foo") {
         if n == "bar".to_string() {
             res.body = "ok".to_string();
 
